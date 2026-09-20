@@ -30,6 +30,14 @@ export const router = createBrowserRouter(
               },
             },
             {
+              path: 'requests/new',
+              lazy: async () => {
+                const { CreateRequestPage } =
+                  await import('../features/requests/pages/CreateRequestPage')
+                return { Component: CreateRequestPage }
+              },
+            },
+            {
               path: 'requests/:requestId',
               lazy: async () => {
                 const { RequestDetailPage } =
