@@ -6,6 +6,7 @@ import { ErrorState } from '../../../shared/components/ErrorState'
 import { FullPageStatus } from '../../../shared/components/FullPageStatus'
 import { useServiceRequest } from '../api/queries'
 import { PriorityBadge, StatusBadge } from '../components/badges'
+import { StatusTransitionControl } from '../components/StatusTransitionControl'
 import { formatDateTime } from '../model/labels'
 
 /** Returns to the list with the filters the user came from, when known. */
@@ -129,6 +130,22 @@ export function RequestDetailPage() {
             <dd>{data.version}</dd>
           </div>
         </dl>
+      </section>
+
+      <section
+        aria-labelledby="request-status-heading"
+        className="rounded-lg border border-border bg-surface p-4"
+      >
+        <h2 id="request-status-heading" className="text-sm font-semibold">
+          Status
+        </h2>
+        <p className="mt-1 text-sm text-ink-muted">
+          Only the transitions allowed by the request lifecycle are offered. The current version is
+          sent with the change so two people cannot overwrite each other unnoticed.
+        </p>
+        <div className="mt-3">
+          <StatusTransitionControl request={data} />
+        </div>
       </section>
     </article>
   )
