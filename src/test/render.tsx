@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, type RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useEffect, type ReactNode } from 'react'
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router'
+import { MemoryRouter, Route, Routes, useLocation, type InitialEntry } from 'react-router'
 
 import { ApiClientContext } from '../api/api-client-context'
 import { createApiClient } from '../api/client'
@@ -26,6 +26,8 @@ export interface RenderRouteOptions {
   path: string
   /** Entry URL, for example `/requests?status=OPEN`. */
   initialEntry: string
+  /** Navigation state, as carried by links between pages. */
+  state?: unknown
 }
 
 export interface RenderRouteResult extends RenderResult {
@@ -36,9 +38,14 @@ export interface RenderRouteResult extends RenderResult {
 
 export function renderRoute(
   element: ReactNode,
-  { path, initialEntry }: RenderRouteOptions,
+  { path, initialEntry, state }: RenderRouteOptions,
 ): RenderRouteResult {
   const user = userEvent.setup()
+  const parsedEntry = new URL(initialEntry, 'http://localhost')
+  const entry: InitialEntry =
+    state === undefined
+      ? initialEntry
+      : { pathname: parsedEntry.pathname, search: parsedEntry.search, state }
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -58,7 +65,7 @@ export function renderRoute(
     <ToastProvider>
       <QueryClientProvider client={queryClient}>
         <ApiClientContext.Provider value={apiClient}>
-          <MemoryRouter initialEntries={[initialEntry]}>
+          <MemoryRouter initialEntries={[entry]}>
             <LocationReporter
               onChange={(next) => {
                 currentUrl = next
