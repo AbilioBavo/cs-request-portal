@@ -9,7 +9,15 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  globalIgnores(['dist', 'coverage', 'playwright-report', 'test-results', 'src/api/schema.d.ts']),
+  globalIgnores([
+    'dist',
+    'coverage',
+    'playwright-report',
+    'test-results',
+    // Generated files that must stay byte-identical to their source.
+    'src/api/schema.d.ts',
+    'public/mockServiceWorker.js',
+  ]),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
