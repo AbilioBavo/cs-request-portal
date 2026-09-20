@@ -73,6 +73,8 @@ export function renderRoute(
             />
             <Routes>
               <Route path={path} element={element} />
+              {/* Destination for navigations away from the page under test. */}
+              <Route path="*" element={<div data-testid="other-location" />} />
             </Routes>
           </MemoryRouter>
         </ApiClientContext.Provider>
