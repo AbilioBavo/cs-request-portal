@@ -8,7 +8,7 @@ export type ApiClient = ReturnType<typeof createApiClient>
 export interface ApiClientOptions {
   baseUrl: string
   /** Returns the current access token, or undefined while signed out. */
-  getAccessToken?: () => string | undefined
+  getAccessToken?: () => string | undefined | Promise<string | undefined>
   /** Called once per rejected request so the auth layer can try to recover. */
   onUnauthenticated?: () => void
 }
@@ -21,8 +21,8 @@ export function createApiClient({
   const client = createClient<paths>({ baseUrl })
 
   const middleware: Middleware = {
-    onRequest({ request }) {
-      const token = getAccessToken?.()
+    async onRequest({ request }) {
+      const token = await getAccessToken?.()
       if (token !== undefined && token !== '') {
         request.headers.set('Authorization', `Bearer ${token}`)
       }
