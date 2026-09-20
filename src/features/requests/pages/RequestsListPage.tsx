@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useLocation } from 'react-router'
+import { Link, useLocation } from 'react-router'
 
 import { Button } from '../../../shared/components/Button'
 import { EmptyState } from '../../../shared/components/EmptyState'
@@ -116,6 +116,12 @@ export function RequestsListPage() {
         <h1 id="requests-heading" className="text-xl font-semibold">
           Service requests
         </h1>
+        <Link
+          to="/requests/new"
+          className="inline-flex items-center justify-center rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand-strong"
+        >
+          New request
+        </Link>
       </div>
 
       <FiltersBar query={query} onChange={update} onClear={clearFilters} />
