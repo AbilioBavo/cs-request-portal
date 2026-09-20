@@ -46,6 +46,9 @@ export default defineConfig([
   {
     files: ['**/*.test.{ts,tsx}', 'src/test/**/*.{ts,tsx}'],
     extends: [testingLibrary.configs['flat/react']],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
   },
   {
     files: ['*.config.{js,ts}', 'e2e/**/*.ts', 'src/mocks/**/*.ts'],
