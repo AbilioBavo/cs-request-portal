@@ -15,7 +15,12 @@ export function DemoBanner() {
   }
 
   return (
-    <p className="bg-amber-100 px-4 py-2 text-center text-sm text-amber-900" role="status">
+    // Static page content rather than a live region: nothing about it changes
+    // after load, and announcing it would compete with the result count.
+    <p
+      className="bg-amber-100 px-4 py-2 text-center text-sm text-amber-900"
+      data-testid="demo-banner"
+    >
       Demo mode: {simulated.join(' and ')} {simulated.length > 1 ? 'are' : 'is'} mocked in the
       browser. Data resets on reload.
     </p>

@@ -14,7 +14,7 @@ describe('DemoBanner', () => {
 
     render(<DemoBanner />)
 
-    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('demo-banner')).not.toBeInTheDocument()
   })
 
   it('names the API as mocked when only the backend is simulated', () => {
@@ -23,7 +23,7 @@ describe('DemoBanner', () => {
 
     render(<DemoBanner />)
 
-    expect(screen.getByRole('status')).toHaveTextContent(
+    expect(screen.getByTestId('demo-banner')).toHaveTextContent(
       'Demo mode: the Service Request API is mocked in the browser.',
     )
   })
@@ -34,7 +34,7 @@ describe('DemoBanner', () => {
 
     render(<DemoBanner />)
 
-    expect(screen.getByRole('status')).toHaveTextContent(
+    expect(screen.getByTestId('demo-banner')).toHaveTextContent(
       'the Service Request API and sign-in are mocked',
     )
   })
