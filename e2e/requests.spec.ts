@@ -27,13 +27,15 @@ test.describe('service request journey', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       'Cannot print from the meeting room',
     )
-    await expect(page.getByText('Open')).toBeVisible()
+    // Scoped to the page body: toasts render outside <main> and repeat the status.
+    const detail = page.getByRole('main')
+    await expect(detail.getByText('Open', { exact: true })).toBeVisible()
 
     await page.getByLabel('Move to').selectOption('IN_PROGRESS')
     await page.getByRole('button', { name: 'Update status' }).click()
     await page.getByRole('button', { name: 'Confirm' }).click()
 
-    await expect(page.getByText('In progress')).toBeVisible()
+    await expect(detail.getByText('In progress', { exact: true })).toBeVisible()
   })
 
   test('shows an empty filtered result with a way out', async ({ page }) => {
