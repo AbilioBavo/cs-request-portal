@@ -40,6 +40,11 @@ jobs:
       - name: Contract drift
         run: pnpm api:check
 
+      # CodeQL reads the code; this reads the lockfile. A known advisory in an
+      # installed version should block the merge, not wait for a Dependabot PR.
+      - name: Dependency advisories
+        run: pnpm audit --audit-level high
+
       - name: Tests and coverage gates
         run: pnpm coverage
 
