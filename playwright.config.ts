@@ -23,6 +23,8 @@ export default defineConfig({
       VITE_ENABLE_API_MOCKS: 'true',
       VITE_DEMO_AUTH: 'true',
       VITE_API_BASE_URL: '/api',
+      // The build refuses to disable authentication unless asked to.
+      ALLOW_DEMO_AUTH_BUILD: 'true',
     },
   },
   projects: [
