@@ -119,6 +119,70 @@ describe('RequestsListPage', () => {
     expect(header).toHaveAttribute('aria-sort', 'ascending')
   })
 
+  it('removes one filter at a time from its chip', async () => {
+    const { user, currentUrl } = renderList('/requests?status=CLOSED&priority=HIGH')
+    await waitForResults()
+
+    await user.click(screen.getByRole('button', { name: 'Remove filter Priority: High' }))
+
+    await waitFor(() => {
+      expect(currentUrl()).toBe('/requests?status=CLOSED')
+    })
+    expect(screen.getByText('Status: Closed')).toBeInTheDocument()
+  })
+
+  it('drops the search term when its chip is removed', async () => {
+    const { user, currentUrl } = renderList('/requests?search=northwind')
+    await waitForResults()
+
+    await user.click(screen.getByRole('button', { name: 'Remove filter Search: northwind' }))
+
+    await waitFor(() => {
+      expect(currentUrl()).toBe('/requests')
+    })
+    expect(screen.getByLabelText('Search')).toHaveValue('')
+  })
+
+  it('changes how many rows a page holds', async () => {
+    const { user, currentUrl } = renderList()
+    await waitForResults()
+
+    await user.selectOptions(screen.getByLabelText(/Rows per page/), '25')
+
+    await waitFor(() => {
+      expect(screen.getByText('Showing 1 to 25 of 42')).toBeInTheDocument()
+    })
+    expect(currentUrl()).toBe('/requests?pageSize=25')
+  })
+
+  it('walks back to the previous page', async () => {
+    const { user, currentUrl } = renderList('/requests?page=2')
+    await waitForResults()
+
+    await user.click(screen.getByRole('button', { name: 'Previous' }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Showing 1 to 10 of 42')).toBeInTheDocument()
+    })
+    // The default page is left out of the URL to keep shared links clean.
+    expect(currentUrl()).toBe('/requests')
+  })
+
+  it('rescues a page number that is past the end of the result set', async () => {
+    const { user, currentUrl } = renderList('/requests?page=9')
+    await waitForResults()
+
+    expect(screen.getByText('This page is empty')).toBeInTheDocument()
+    expect(screen.getByText(/42 requests across 5 pages/)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Go to the first page' }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Showing 1 to 10 of 42')).toBeInTheDocument()
+    })
+    expect(currentUrl()).toBe('/requests')
+  })
+
   it('reports a failing list request and retries on demand', async () => {
     server.use(
       http.get('*/requests', () =>

@@ -17,6 +17,9 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     restoreMocks: true,
     globals: true,
+    // Form tests drive real keystrokes through jsdom; under coverage and
+    // parallel workers the default 5s is not enough headroom on slower CI boxes.
+    testTimeout: 20_000,
     exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
     coverage: {
       provider: 'v8',

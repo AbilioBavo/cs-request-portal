@@ -3,23 +3,16 @@ import { afterAll, afterEach, beforeAll, vi } from 'vitest'
 
 import { server } from '../mocks/server'
 import { resetStore } from '../mocks/store'
+import { resetAuth } from './auth-mock'
 
-vi.mock('react-oidc-context', () => ({
-  useAuth: () => ({
-    isAuthenticated: true,
-    isLoading: false,
-    error: undefined,
-    user: {
-      access_token: 'test-access-token',
-      scope: 'openid profile email service-requests.read service-requests.write',
-      profile: { name: 'Ana Agent', email: 'agent@example.com' },
-    },
-    signinRedirect: vi.fn(),
-    signoutRedirect: vi.fn(),
-    signinSilent: vi.fn(),
-  }),
-  AuthProvider: ({ children }: { children: unknown }) => children,
-}))
+vi.mock('react-oidc-context', async () => {
+  const { authMock } = await import('./auth-mock')
+
+  return {
+    useAuth: () => authMock.value,
+    AuthProvider: ({ children }: { children: unknown }) => children,
+  }
+})
 
 beforeAll(() => {
   server.listen({ onUnhandledRequest: 'error' })
@@ -28,6 +21,7 @@ beforeAll(() => {
 afterEach(() => {
   server.resetHandlers()
   resetStore()
+  resetAuth()
 })
 
 afterAll(() => {

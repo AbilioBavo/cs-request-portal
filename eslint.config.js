@@ -48,6 +48,8 @@ export default defineConfig([
     extends: [testingLibrary.configs['flat/react']],
     rules: {
       'react-refresh/only-export-components': 'off',
+      // Assertions pass mocked methods around by reference on purpose.
+      '@typescript-eslint/unbound-method': 'off',
     },
   },
   {
