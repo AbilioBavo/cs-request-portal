@@ -16,8 +16,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     restoreMocks: true,
-    /* Testing Library registers its own cleanup hook when the globals exist. */
     globals: true,
+    exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'lcov'],

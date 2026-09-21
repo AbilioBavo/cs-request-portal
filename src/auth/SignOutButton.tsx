@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from 'react-oidc-context'
 
 import { Button } from '../shared/components/Button'
+import { env } from '../shared/config/env'
 
 export function SignOutButton() {
   const auth = useAuth()
@@ -11,10 +12,10 @@ export function SignOutButton() {
     <Button
       variant="secondary"
       onClick={() => {
-        // Drop cached service requests before leaving so the next user of this
-        // browser cannot read them from memory.
         queryClient.clear()
-        void auth.signoutRedirect()
+        if (!env.e2eAuth) {
+          void auth.signoutRedirect()
+        }
       }}
     >
       Sign out

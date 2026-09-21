@@ -9,6 +9,10 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((value) => value === 'true'),
+  VITE_E2E_AUTH: z
+    .string()
+    .optional()
+    .transform((value) => value === 'true'),
 })
 
 const parsed = envSchema.parse(import.meta.env)
@@ -18,6 +22,11 @@ export const env = {
   /** Vite injects the deploy sub-path here; the router uses it as basename. */
   basePath: import.meta.env.BASE_URL,
   enableApiMocks: parsed.VITE_ENABLE_API_MOCKS,
+  /**
+   * Skips the real OIDC provider so Playwright can drive the app without
+   * Keycloak. Never enable this in a production build.
+   */
+  e2eAuth: parsed.VITE_E2E_AUTH,
   oidc: {
     authority: parsed.VITE_OIDC_AUTHORITY,
     clientId: parsed.VITE_OIDC_CLIENT_ID,

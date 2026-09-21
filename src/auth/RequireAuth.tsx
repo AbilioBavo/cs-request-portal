@@ -5,7 +5,7 @@ import { useLocation } from 'react-router'
 import { ConfigurationRequired } from '../app/pages/ConfigurationRequired'
 import { ErrorState } from '../shared/components/ErrorState'
 import { FullPageStatus } from '../shared/components/FullPageStatus'
-import { isOidcConfigured } from '../shared/config/env'
+import { isOidcConfigured, env } from '../shared/config/env'
 
 export function RequireAuth({ children }: { children: ReactNode }) {
   const auth = useAuth()
@@ -16,7 +16,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const returnTo = `${location.pathname}${location.search}`
 
   useEffect(() => {
-    if (!isOidcConfigured || redirectStarted.current) {
+    if (env.e2eAuth || !isOidcConfigured || redirectStarted.current) {
       return
     }
 
@@ -28,6 +28,10 @@ export function RequireAuth({ children }: { children: ReactNode }) {
     redirectStarted.current = true
     void auth.signinRedirect({ state: { returnTo } })
   }, [auth, returnTo])
+
+  if (env.e2eAuth) {
+    return children
+  }
 
   if (!isOidcConfigured) {
     return <ConfigurationRequired />
