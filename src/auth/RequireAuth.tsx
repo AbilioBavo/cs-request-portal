@@ -16,7 +16,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const returnTo = `${location.pathname}${location.search}`
 
   useEffect(() => {
-    if (env.e2eAuth || !isOidcConfigured || redirectStarted.current) {
+    if (env.demoAuth || !isOidcConfigured || redirectStarted.current) {
       return
     }
 
@@ -29,7 +29,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
     void auth.signinRedirect({ state: { returnTo } })
   }, [auth, returnTo])
 
-  if (env.e2eAuth) {
+  if (env.demoAuth) {
     return children
   }
 

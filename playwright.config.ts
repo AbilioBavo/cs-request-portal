@@ -21,7 +21,7 @@ export default defineConfig({
     timeout: 120_000,
     env: {
       VITE_ENABLE_API_MOCKS: 'true',
-      VITE_E2E_AUTH: 'true',
+      VITE_DEMO_AUTH: 'true',
       VITE_API_BASE_URL: '/api',
     },
   },

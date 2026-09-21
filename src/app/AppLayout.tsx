@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router'
 
 import { AppHeader } from './AppHeader'
+import { DemoBanner } from './DemoBanner'
 
 export function AppLayout() {
   return (
@@ -12,6 +13,7 @@ export function AppLayout() {
         Skip to main content
       </a>
 
+      <DemoBanner />
       <AppHeader />
 
       <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">

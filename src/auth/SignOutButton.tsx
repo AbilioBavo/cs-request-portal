@@ -13,7 +13,7 @@ export function SignOutButton() {
       variant="secondary"
       onClick={() => {
         queryClient.clear()
-        if (!env.e2eAuth) {
+        if (!env.demoAuth) {
           void auth.signoutRedirect()
         }
       }}
