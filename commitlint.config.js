@@ -5,7 +5,7 @@ export default {
     'scope-enum': [
       2,
       'always',
-      ['api', 'app', 'auth', 'mocks', 'requests', 'shared', 'test', 'ci', 'deps'],
+      ['api', 'app', 'auth', 'mocks', 'requests', 'shared', 'test', 'e2e', 'ci', 'deps'],
     ],
   },
 }

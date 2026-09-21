@@ -20,6 +20,7 @@
     "coverage": "vitest run --coverage",
     "api:types": "openapi-typescript api/frontend-challenge-api.openapi.yaml -o src/api/schema.d.ts",
     "api:check": "pnpm api:types && git diff --exit-code -- src/api/schema.d.ts",
+    "test:e2e": "playwright test",
     "verify": "pnpm typecheck && pnpm lint && pnpm format && pnpm test",
     "prepare": "husky"
   },
@@ -54,6 +55,7 @@
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/eslint-plugin-query": "^5.103.1",
     "@testing-library/jest-dom": "^6.10.0",
