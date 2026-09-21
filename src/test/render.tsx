@@ -40,7 +40,9 @@ export function renderRoute(
   element: ReactNode,
   { path, initialEntry, state }: RenderRouteOptions,
 ): RenderRouteResult {
-  const user = userEvent.setup()
+  // Typing whole descriptions through the default inter-key delay dominates the
+  // runtime of the form tests without buying any extra confidence.
+  const user = userEvent.setup({ delay: null })
   const parsedEntry = new URL(initialEntry, 'http://localhost')
   const entry: InitialEntry =
     state === undefined
