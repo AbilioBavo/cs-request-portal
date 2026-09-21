@@ -191,8 +191,8 @@
     {
       "username": "agent",
       "email": "agent@example.com",
-      "firstName": "Ana",
-      "lastName": "Agent",
+      "firstName": "Abilio",
+      "lastName": "Bavo",
       "enabled": true,
       "emailVerified": true,
       "credentials": [
