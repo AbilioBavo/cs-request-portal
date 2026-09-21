@@ -9,7 +9,7 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((value) => value === 'true'),
-  VITE_E2E_AUTH: z
+  VITE_DEMO_AUTH: z
     .string()
     .optional()
     .transform((value) => value === 'true'),
@@ -23,10 +23,11 @@ export const env = {
   basePath: import.meta.env.BASE_URL,
   enableApiMocks: parsed.VITE_ENABLE_API_MOCKS,
   /**
-   * Skips the real OIDC provider so Playwright can drive the app without
-   * Keycloak. Never enable this in a production build.
+   * Replaces the OIDC provider with a fixed session. Used by Playwright and by
+   * the public demo deploy, which have no Keycloak to talk to. A real
+   * deployment leaves this off and goes through the redirect flow.
    */
-  e2eAuth: parsed.VITE_E2E_AUTH,
+  demoAuth: parsed.VITE_DEMO_AUTH,
   oidc: {
     authority: parsed.VITE_OIDC_AUTHORITY,
     clientId: parsed.VITE_OIDC_CLIENT_ID,

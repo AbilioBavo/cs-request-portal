@@ -5,7 +5,7 @@ import { useAuth } from 'react-oidc-context'
 import { ApiClientContext } from '../api/api-client-context'
 import { createApiClient } from '../api/client'
 import { recoverExpiredSession } from '../auth/session-recovery'
-import { E2E_ACCESS_TOKEN } from '../auth/e2e-session'
+import { DEMO_ACCESS_TOKEN } from '../auth/demo-session'
 import { readAccessToken } from '../auth/user-manager'
 import { env } from '../shared/config/env'
 import { useToast } from '../shared/toast/toast-context'
@@ -16,7 +16,7 @@ export function ApiClientProvider({ children }: { children: ReactNode }) {
   const { showToast } = useToast()
 
   const client = useMemo(() => {
-    const onUnauthenticated = env.e2eAuth
+    const onUnauthenticated = env.demoAuth
       ? undefined
       : () => {
           void recoverExpiredSession({
@@ -34,7 +34,7 @@ export function ApiClientProvider({ children }: { children: ReactNode }) {
 
     return createApiClient({
       baseUrl: env.apiBaseUrl,
-      getAccessToken: env.e2eAuth ? () => E2E_ACCESS_TOKEN : readAccessToken,
+      getAccessToken: env.demoAuth ? () => DEMO_ACCESS_TOKEN : readAccessToken,
       ...(onUnauthenticated === undefined ? {} : { onUnauthenticated }),
     })
   }, [auth, queryClient, showToast])

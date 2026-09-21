@@ -12,7 +12,7 @@ interface ImportMetaEnv {
   /** Set to "true" to start the MSW worker in the browser */
   readonly VITE_ENABLE_API_MOCKS: string
   /** Set to "true" in Playwright to skip the real OIDC provider */
-  readonly VITE_E2E_AUTH: string
+  readonly VITE_DEMO_AUTH: string
 }
 
 interface ImportMeta {

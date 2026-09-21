@@ -40,7 +40,7 @@ const settings: UserManagerSettings = {
   userStore: new WebStorageStateStore({ store: window.sessionStorage }),
   stateStore: new WebStorageStateStore({ store: window.sessionStorage }),
 
-  automaticSilentRenew: import.meta.env.VITE_E2E_AUTH !== 'true',
+  automaticSilentRenew: import.meta.env.VITE_DEMO_AUTH !== 'true',
 
   /*
    * Session monitoring polls the provider through a hidden iframe. It is the

@@ -1,7 +1,7 @@
 import { useAuth } from 'react-oidc-context'
 
 import { env } from '../shared/config/env'
-import { E2E_SESSION } from './e2e-session'
+import { DEMO_SESSION } from './demo-session'
 
 export const READ_SCOPE = 'service-requests.read'
 export const WRITE_SCOPE = 'service-requests.write'
@@ -17,8 +17,8 @@ export interface AuthSession {
 export function useAuthSession(): AuthSession {
   const { isAuthenticated, user } = useAuth()
 
-  if (env.e2eAuth) {
-    return E2E_SESSION
+  if (env.demoAuth) {
+    return DEMO_SESSION
   }
 
   const grantedScopes = user?.scope?.split(' ') ?? null
