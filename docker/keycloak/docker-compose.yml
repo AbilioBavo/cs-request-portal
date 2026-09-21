@@ -12,6 +12,9 @@ services:
     ports:
       - '8080:8080'
     volumes:
+      # Declaring clientScopes in the realm replaces the built-in ones, so
+      # profile and email are defined in the file with the mappers the portal
+      # reads. Unknown JSON keys abort the import, comments live here instead.
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
     healthcheck:
       test: ['CMD-SHELL', 'exec 3<>/dev/tcp/127.0.0.1/8080 && echo -e "GET / HTTP/1.1\r\n\r\n" >&3']
