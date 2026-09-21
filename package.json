@@ -21,6 +21,8 @@
     "api:types": "openapi-typescript api/frontend-challenge-api.openapi.yaml -o src/api/schema.d.ts",
     "api:check": "pnpm api:types && git diff --exit-code -- src/api/schema.d.ts",
     "test:e2e": "playwright test",
+    "budget": "node scripts/check-bundle-budget.mjs",
+    "build:budget": "pnpm build && pnpm budget",
     "verify": "pnpm typecheck && pnpm lint && pnpm format && pnpm test",
     "prepare": "husky"
   },
