@@ -32,7 +32,7 @@ export function RequestsTable({
   const sortState = createdAtSortState(sort)
 
   return (
-    <div className="hidden overflow-hidden rounded-lg border border-border bg-surface md:block">
+    <div className="hidden overflow-hidden rounded-xl border border-border bg-surface shadow-soft md:block">
       <table className="w-full border-collapse">
         <caption className="sr-only">Service requests, {total} in total</caption>
         <thead className="border-b border-border bg-surface-muted">

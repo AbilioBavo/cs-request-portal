@@ -39,19 +39,34 @@ describe('CreateRequestPage', () => {
     await user.type(screen.getByLabelText(/Category/), validInput.category)
     await user.type(screen.getByLabelText(/Requester name/), validInput.requesterName)
     await user.type(screen.getByLabelText(/Requester email/), validInput.requesterEmail)
-    await user.click(screen.getByRole('button', { name: 'Create request' }))
+    await user.click(screen.getByRole('button', { name: 'Review request' }))
 
     expect(await screen.findByText('Use at least 3 characters.')).toBeInTheDocument()
   })
 
-  it('creates a request and leaves the form', async () => {
+  it('shows a review step and creates only after confirmation', async () => {
     const { user } = renderCreate()
     await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: 'Review request' }))
+
+    expect(await screen.findByText('Review before creating')).toBeInTheDocument()
+    expect(screen.getByText(validInput.title)).toBeInTheDocument()
+
     await user.click(screen.getByRole('button', { name: 'Create request' }))
 
     await waitFor(() => {
       expect(screen.getByTestId('other-location')).toBeInTheDocument()
     })
+  })
+
+  it('returns to the form when Edit is chosen on the review step', async () => {
+    const { user } = renderCreate()
+    await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: 'Review request' }))
+    await user.click(await screen.findByRole('button', { name: 'Edit' }))
+
+    expect(screen.getByRole('button', { name: 'Review request' })).toBeInTheDocument()
+    expect(screen.getByLabelText(/Title/)).toHaveValue(validInput.title)
   })
 
   it('shows server field errors on a 422 response', async () => {
@@ -71,8 +86,10 @@ describe('CreateRequestPage', () => {
 
     const { user } = renderCreate()
     await fillValidForm(user)
-    await user.click(screen.getByRole('button', { name: 'Create request' }))
+    await user.click(screen.getByRole('button', { name: 'Review request' }))
+    await user.click(await screen.findByRole('button', { name: 'Create request' }))
 
     expect(await screen.findByText('Title must be at least 3 characters long.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Review request' })).toBeInTheDocument()
   })
 })

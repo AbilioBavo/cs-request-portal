@@ -14,7 +14,7 @@ export function RequestCardList({ items, listSearch }: RequestCardListProps) {
   return (
     <ul className="space-y-3 md:hidden">
       {items.map((item) => (
-        <li key={item.id} className="rounded-lg border border-border bg-surface p-4">
+        <li key={item.id} className="rounded-xl border border-border bg-surface p-4 shadow-soft">
           <Link
             to={`/requests/${item.id}`}
             state={{ from: listSearch }}

@@ -24,7 +24,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-surface px-4 py-3"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 py-3 shadow-soft"
     >
       <p className="text-sm text-ink-muted">
         Showing {firstItem} to {lastItem} of {total}

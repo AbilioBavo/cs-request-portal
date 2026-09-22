@@ -1,13 +1,16 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/ibm-plex-sans';
 
 @theme {
+  --font-sans: 'IBM Plex Sans Variable', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+
   --color-surface: #ffffff;
-  --color-surface-muted: #f5f6f8;
-  --color-border: #d7dbe2;
-  --color-ink: #15181e;
-  --color-ink-muted: #565e6d;
-  --color-brand: #1f4fd8;
-  --color-brand-strong: #163bab;
+  --color-surface-muted: #f3f5f8;
+  --color-border: #e2e6ee;
+  --color-ink: #12151c;
+  --color-ink-muted: #5a6270;
+  --color-brand: #1a4fd6;
+  --color-brand-strong: #143fad;
   --color-danger: #b42318;
   --color-danger-surface: #fef3f2;
   --color-warning: #b54708;
@@ -16,6 +19,8 @@
   --color-success-surface: #ecfdf3;
   --color-info: #175cd3;
   --color-info-surface: #eff8ff;
+
+  --shadow-soft: 0 1px 2px rgb(18 21 28 / 4%), 0 4px 12px rgb(18 21 28 / 4%);
 }
 
 @layer base {
@@ -24,7 +29,7 @@
   }
 
   body {
-    @apply bg-surface-muted text-ink antialiased;
+    @apply bg-surface-muted font-sans text-ink antialiased;
   }
 
   :focus-visible {

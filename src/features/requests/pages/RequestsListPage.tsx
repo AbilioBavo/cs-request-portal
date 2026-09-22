@@ -111,14 +111,14 @@ export function RequestsListPage() {
   }
 
   return (
-    <section aria-labelledby="requests-heading" className="space-y-4">
+    <section aria-labelledby="requests-heading" className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 id="requests-heading" className="text-xl font-semibold">
+        <h1 id="requests-heading" className="text-2xl font-semibold tracking-tight">
           Service requests
         </h1>
         <Link
           to="/requests/new"
-          className="inline-flex items-center justify-center rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand-strong"
+          className="inline-flex items-center justify-center rounded-md bg-brand px-3.5 py-2 text-sm font-medium text-white shadow-soft transition-colors hover:bg-brand-strong"
         >
           New request
         </Link>

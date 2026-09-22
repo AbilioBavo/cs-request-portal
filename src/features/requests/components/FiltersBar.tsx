@@ -75,7 +75,7 @@ export function FiltersBar({ query, onChange, onClear }: FiltersBarProps) {
   return (
     <section
       aria-label="Filters"
-      className="rounded-lg border border-border bg-surface p-4 shadow-xs"
+      className="rounded-xl border border-border bg-surface p-4 shadow-soft"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <SearchField

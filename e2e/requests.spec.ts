@@ -22,6 +22,8 @@ test.describe('service request journey', () => {
     await page.getByLabel(/Priority/).selectOption('HIGH')
     await page.getByLabel(/Requester name/).fill('Meeting Room Desk')
     await page.getByLabel(/Requester email/).fill('meeting.room@example.com')
+    await page.getByRole('button', { name: 'Review request' }).click()
+    await expect(page.getByText('Review before creating')).toBeVisible()
     await page.getByRole('button', { name: 'Create request' }).click()
 
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(

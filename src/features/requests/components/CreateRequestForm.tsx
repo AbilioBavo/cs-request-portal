@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, useWatch, type UseFormSetError } from 'react-hook-form'
 import { useNavigate } from 'react-router'
@@ -27,10 +28,47 @@ function applyServerErrors(
   }
 }
 
+function ReviewSummary({ values }: { values: CreateRequestInput }) {
+  return (
+    <dl className="space-y-4 text-sm">
+      <div>
+        <dt className="text-xs font-medium text-ink-muted">Title</dt>
+        <dd className="mt-0.5 font-medium">{values.title}</dd>
+      </div>
+      <div>
+        <dt className="text-xs font-medium text-ink-muted">Description</dt>
+        <dd className="mt-0.5 leading-relaxed whitespace-pre-line">{values.description}</dd>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <dt className="text-xs font-medium text-ink-muted">Category</dt>
+          <dd className="mt-0.5">{values.category}</dd>
+        </div>
+        <div>
+          <dt className="text-xs font-medium text-ink-muted">Priority</dt>
+          <dd className="mt-0.5">{PRIORITY_LABELS[values.priority]}</dd>
+        </div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <dt className="text-xs font-medium text-ink-muted">Requester</dt>
+          <dd className="mt-0.5">{values.requesterName}</dd>
+        </div>
+        <div>
+          <dt className="text-xs font-medium text-ink-muted">Contact</dt>
+          <dd className="mt-0.5">{values.requesterEmail}</dd>
+        </div>
+      </div>
+    </dl>
+  )
+}
+
 export function CreateRequestForm() {
   const navigate = useNavigate()
   const { showToast } = useToast()
   const createRequest = useCreateRequest()
+  const [step, setStep] = useState<'edit' | 'review'>('edit')
+  const [draft, setDraft] = useState<CreateRequestInput | null>(null)
 
   const {
     register,
@@ -57,9 +95,18 @@ export function CreateRequestForm() {
   const category = useWatch({ control, name: 'category' })
   const requesterName = useWatch({ control, name: 'requesterName' })
 
-  async function onSubmit(values: CreateRequestInput): Promise<void> {
+  function onReview(values: CreateRequestInput): void {
+    setDraft(values)
+    setStep('review')
+  }
+
+  async function onConfirm(): Promise<void> {
+    if (draft === null) {
+      return
+    }
+
     try {
-      const created = await createRequest.mutateAsync(values)
+      const created = await createRequest.mutateAsync(draft)
       showToast({
         tone: 'success',
         title: 'Service request created',
@@ -70,10 +117,14 @@ export function CreateRequestForm() {
       const problem = ApiProblem.fromUnknown(error)
 
       if (problem.isValidationFailure) {
+        setStep('edit')
         applyServerErrors(problem, setError)
         const firstInvalid = Object.keys(problem.fieldErrors ?? {}).find(isCreateRequestField)
         if (firstInvalid !== undefined) {
-          setFocus(firstInvalid)
+          // Defer focus until the edit fields are back in the tree.
+          queueMicrotask(() => {
+            setFocus(firstInvalid)
+          })
         }
         return
       }
@@ -87,8 +138,43 @@ export function CreateRequestForm() {
     }
   }
 
+  if (step === 'review' && draft !== null) {
+    return (
+      <div className="space-y-5">
+        <div>
+          <h2 className="text-sm font-semibold tracking-tight">Review before creating</h2>
+          <p className="mt-1 text-sm text-ink-muted">
+            Check the details. Title, description, category and priority cannot be edited after
+            creation.
+          </p>
+        </div>
+
+        <ReviewSummary values={draft} />
+
+        <div className="flex flex-wrap items-center justify-end gap-3 border-t border-border pt-4">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              setStep('edit')
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            type="button"
+            isLoading={createRequest.isPending}
+            onClick={() => void onConfirm()}
+          >
+            Create request
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <form className="space-y-4" noValidate onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
+    <form className="space-y-4" noValidate onSubmit={(event) => void handleSubmit(onReview)(event)}>
       <TextField
         id="title"
         label="Title"
@@ -179,7 +265,7 @@ export function CreateRequestForm() {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+      <div className="flex flex-wrap items-center justify-end gap-3 border-t border-border pt-4">
         <Button
           type="button"
           variant="secondary"
@@ -194,7 +280,7 @@ export function CreateRequestForm() {
         </Button>
 
         <Button type="submit" isLoading={isSubmitting}>
-          Create request
+          Review request
         </Button>
       </div>
     </form>

@@ -2,7 +2,7 @@ export function RequestsSkeleton({ rows = 5 }: { rows?: number }) {
   return (
     <div
       aria-hidden="true"
-      className="space-y-2 rounded-lg border border-border bg-surface p-4"
+      className="space-y-2 rounded-xl border border-border bg-surface p-4 shadow-soft"
       data-testid="requests-skeleton"
     >
       {Array.from({ length: rows }, (_unused, index) => (
